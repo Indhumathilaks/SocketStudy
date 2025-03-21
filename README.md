@@ -57,35 +57,32 @@ Socket programming finds applications in various domains, including web developm
 Client
 ```
 import socket
+from datetime import datetime
 s=socket.socket()
 s.bind(('localhost',8000))
 s.listen(5)
 c,addr=s.accept()
-while True:
- i=input("Enter a data: ")
- c.send(i.encode())
- ack=c.recv(1024).decode()
- if ack:
-     print(ack)
-     continue
- else:
-     c.close()
-     break
+print("Client Address : ",addr)
+now = datetime.now()
+c.send(now.strftime("%d/%m/%Y %H:%M:%S").encode())
+ack=c.recv(1024).decode()
+if ack:
+    print(ack)
+c.close()
 ```
 Server
 ```
 import socket
 s=socket.socket()
 s.connect(('localhost',8000))
-while True:
- print(s.recv(1024).decode())
- s.send("Acknowledgement Recived".encode())
+print(s.getsockname())
+print(s.recv(1024).decode())
+s.send("acknowledgement recived from the server".encode())
 ```
 ## Output
+![2aclient](https://github.com/user-attachments/assets/b1a21a3f-f328-4f6d-90ec-01abc8365c86)
 
-![1aclient](https://github.com/user-attachments/assets/8ea573b6-2299-4a82-adcb-5c476036ff9f)
-
-![1aserver](https://github.com/user-attachments/assets/71270015-044a-49db-8e64-e3377b47fae3)
+![2aserver](https://github.com/user-attachments/assets/9921998c-66f5-41d2-bbb8-adfe02dee3a0)
 
 
 ## Result:
